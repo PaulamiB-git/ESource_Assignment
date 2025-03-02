@@ -43,17 +43,18 @@ selected_utilities = utility_name.split(',')
 # COMMAND ----------
 
 #run the specific utility flow
-# Get the current month
-current_month = datetime.now().month
-current_year = datetime.now().year
+# read job parameters
+env = dbutils.widgets.get("env")
+current_month = dbutils.widgets.get("month_of_run")
+current_year = dbutils.widgets.get("year_of_run")
 processed_timestamp = datetime.now()
 
 params = {
+    "env" : env,
     "year": current_year,
     "month": current_month,
     "processed_timestamp" : processed_timestamp
 }
-
 
 # COMMAND ----------
 
