@@ -22,7 +22,8 @@ from pyspark.sql.functions import *
 
 # COMMAND ----------
 
-# Access the parameters passed from the calling notebook
+# Access the parameters passed from the calling notebook and use this to access the specific ADLS location for reading and writing data
+env = dbutils.widgets.get("env")
 year = dbutils.widgets.get("year")
 month = dbutils.widgets.get("month")
 processed_timestamp = dbutils.widgets.get("processed_timestamp")

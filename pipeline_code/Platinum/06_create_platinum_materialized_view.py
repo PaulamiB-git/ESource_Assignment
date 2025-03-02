@@ -18,6 +18,14 @@ from datetime import datetime
 
 # COMMAND ----------
 
+# Access the parameters passed from the calling notebook and use this to access the specific ADLS location for reading and writing data
+env = dbutils.widgets.get("env")
+year = dbutils.widgets.get("year")
+month = dbutils.widgets.get("month")
+processed_timestamp = dbutils.widgets.get("processed_timestamp")
+
+# COMMAND ----------
+
 #get the list of utility companies active
 df = spark.read.format("delta").table("utility_list")
 df=df.filter(df.active_status==1).select("utility_name")
