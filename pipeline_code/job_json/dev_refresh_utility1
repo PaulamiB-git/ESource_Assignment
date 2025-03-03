@@ -1,0 +1,99 @@
+{
+  "job_id": 227728281437650,
+  "creator_user_name": "paulami88@gmail.com",
+  "run_as_user_name": "paulami88@gmail.com",
+  "run_as_owner": true,
+  "settings": {
+    "name": "dev_refresh_utility1",
+    "email_notifications": {
+      "no_alert_for_skipped_runs": false
+    },
+    "webhook_notifications": {},
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "Configure",
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/paulami88@gmail.com/ESource_Assignment_dev/pipeline_code/Utility/configure_authentication",
+          "source": "WORKSPACE"
+        },
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "ingest_raw",
+        "depends_on": [
+          {
+            "task_key": "Configure"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/paulami88@gmail.com/ESource_Assignment_dev/pipeline_code/Bronze/01_ingest_raw_files",
+          "source": "WORKSPACE"
+        },
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "load_bronze",
+        "depends_on": [
+          {
+            "task_key": "ingest_raw"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/paulami88@gmail.com/ESource_Assignment_dev/pipeline_code/Bronze/02_create_bronze_tables",
+          "source": "WORKSPACE"
+        },
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "load_silver",
+        "depends_on": [
+          {
+            "task_key": "load_bronze"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/paulami88@gmail.com/ESource_Assignment_dev/pipeline_code/Silver/03_create_silver_tables",
+          "source": "WORKSPACE"
+        },
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      }
+    ],
+    "format": "MULTI_TASK",
+    "queue": {
+      "enabled": true
+    },
+    "parameters": [
+      {
+        "name": "env",
+        "default": "dev"
+      },
+      {
+        "name": "month_of_run",
+        "default": ""
+      },
+      {
+        "name": "year_of_run",
+        "default": ""
+      },
+      {
+        "name": "utility_name",
+        "default": ""
+      }
+    ]
+  },
+  "created_time": 1740959586478
+}
